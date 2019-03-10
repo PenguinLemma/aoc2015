@@ -20,7 +20,7 @@ int main()
         std::istream_iterator<std::string>(std::cin),
         std::istream_iterator<std::string>(),
         0,
-        [](long long area, const std::string& box_dim){ return area + ComputeRibbonLength(box_dim); }
+        [](long long length, const std::string& box_dim){ return length + ComputeRibbonLength(box_dim); }
     )
     << std::endl;
 }
