@@ -6,12 +6,11 @@
 #include <iterator>
 #include "common_day2.hpp"
 
-int ComputeWrappingPaperArea(const std::string& box_dim)
+int ComputeRibbonLength(const std::string& box_dim)
 {
     std::vector<int> dimensions = plemma::GetDimensionsFromString(box_dim);
-    return 3 * dimensions[0] * dimensions[1] +
-           2 * dimensions[1] * dimensions[2] +
-           2 * dimensions[2] * dimensions[0];
+    return 2 * dimensions[0] + 2 * dimensions[1] + // perimeter of smalles face of box
+           dimensions[0] * dimensions[1] * dimensions[2]; // volum of the box
 }
 
 int main()
@@ -21,7 +20,7 @@ int main()
         std::istream_iterator<std::string>(std::cin),
         std::istream_iterator<std::string>(),
         0,
-        [](long long area, const std::string& box_dim){ return area + ComputeWrappingPaperArea(box_dim); }
+        [](long long area, const std::string& box_dim){ return area + ComputeRibbonLength(box_dim); }
     )
     << std::endl;
 }
