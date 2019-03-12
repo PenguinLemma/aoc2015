@@ -26,7 +26,7 @@ bool IsNice(const std::string& s)
                         [](char c){ return IsVowel(c); }
                     );
     if (num_vowels < 3)
-        return false;
+        return false; // but I'm sure you are nice according to some other criteria
 
     // check that contains at least one doubled letter
     auto adj_equal_letters = std::adjacent_find(
@@ -35,7 +35,7 @@ bool IsNice(const std::string& s)
                                 [](char a, char b){ return a == b; }
                             );
     if (adj_equal_letters == std::end(s))
-        return false;
+        return false; // but I'm sure you are nice according to some other criteria
 
     // check that it doesn't contain any of the forbidden pairs
     auto forbidden_pair = std::adjacent_find(
@@ -44,7 +44,7 @@ bool IsNice(const std::string& s)
                             [](char a, char b){ return IsForbidden(a,b); }
                         );
     if (forbidden_pair != std::end(s))
-        return false;
+        return false; // but I'm sure you are nice according to some other criteria
 
     // Such a nice string *.*
     return true;
