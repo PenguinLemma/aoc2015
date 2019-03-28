@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include <iterator>
+#include <functional>
+#include <numeric>
 
 namespace plemma
 {
@@ -14,10 +16,17 @@ namespace plemma
 // or a literal value (the number itself)
 using Symbol = typename std::variant<std::string, uint16_t>;
 
+char GetFirstLetter(const Symbol& s)
+{
+    return std::visit([](auto&& arg) -> char { return arg[0]; }, s);
+}
+
 bool IsOperation(const Symbol& s)
 {
-    return std::holds_alternative<std::string>(s)
-        and ('A' <= s[0] and s[0] <= 'Z');
+    if (not std::holds_alternative<std::string>(s))
+        return false;
+    char first = GetFirstLetter(s);
+    return 'A' <= first and first <= 'Z';
 }
 
 Symbol GetSymbolFromString(const std::string& raw_symbol)
@@ -65,14 +74,15 @@ struct Expression
         // position.
         if (symbols.size() > 1)
         {
+            auto it_operator = find_if(
+                std::begin(symbols),
+                std::end(symbols),
+                [](const Symbol& s){ return IsOperation(s); }
+            );
             std::rotate(
                 std::begin(symbols),
-                find_if(
-                    std::begin(symbols),
-                    std::end(symbols),
-                    [](const Symbol& s){ return IsOperation(s); }
-                ),
-                std::end(symbols)
+                it_operator,
+                it_operator
             );
         }
     }
@@ -83,11 +93,61 @@ class Evaluator
 public:
     void Add(const std::string& variable, const std::string& raw_expression)
     {
-        variables_[variable] = Expression(raw_expression);
+        equations_[variable] = Expression(raw_expression);
     }
-    Evaluate(const std::string& variable);
+    uint16_t Evaluate(const Symbol& variable);
 private:
-    std::unordered_map<std::string, Expression> variables_;
+    std::unordered_map<std::string, Expression> equations_;
 };
+
+uint16_t Evaluator::Evaluate(const Symbol& s)
+{
+    // if the symbol holds a number, we simply return it
+    if(std::holds_alternative<uint16_t>(s))
+    {
+        return s;
+    }
+    // if it has already been evaluated, we return its value
+    if(equations_[s].has_been_evaluated)
+    {
+        return equations_[s].value;
+    }
+
+    uint16_t value;
+    if(equations_[s].symbols.size() == 1)
+    {
+        value = equations_[s].symbols[0];
+    }
+    else
+    {
+        // first symbol in the expression is the operator, and
+        // its first letter will let us know which one is it
+        switch(equations_[s].symbols[0][0])
+        {
+        case 'N':
+            value = std::bit_not(Evaluate(equations_[s].symbols[1]));
+            break;
+        case 'A':
+            value = std::bit_and(Evaluate(equations_[s].symbols[1]),
+                                 Evaluate(equations_[s].symbols[2]));
+            break;
+        case 'O':
+            value = std::bit_or(Evaluate(equations_[s].symbols[1]),
+                                Evaluate(equations_[s].symbols[2]));
+            break;
+        case 'L':
+            value = Evaluate(equations_[s].symbols[1])
+                << Evaluate(equations_[s].symbols[2]);
+            break;
+        case 'R':
+            value = Evaluate(equations_[s].symbols[1])
+                >> Evaluate(equations_[s].symbols[2]);
+        }
+    }
+
+    equations_[s].has_been_evaluated = true;
+    equations_[s].value = value;
+    return value;
+}
 
 } // namespace plemma

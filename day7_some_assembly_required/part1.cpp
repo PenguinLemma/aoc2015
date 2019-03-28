@@ -18,7 +18,7 @@ int main()
     // (i.e. all the part of the line before the ->)
     // then throw away the next character (>) and then read
     // the name of the variable (last string on the line)
-    while(std::getline(cin, expression, '-'))
+    while(std::getline(std::cin, expression, '-'))
     {
         char rubbish;
         cin >> rubbish;
