@@ -21,9 +21,9 @@ int main()
     while(std::getline(std::cin, expression, '-'))
     {
         char rubbish;
-        cin >> rubbish;
+        std::cin >> rubbish;
         std::string variable_name;
-        cin >> variable_name;
+        std::cin >> variable_name;
         evaluator.Add(variable_name, expression);
     }
     std::cout << evaluator.Evaluate("a") << std::endl;
