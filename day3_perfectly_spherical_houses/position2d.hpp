@@ -1,32 +1,39 @@
 #pragma once
 
-#include <vector>
-#include <string>
 #include <functional>
+#include <string>
+#include <vector>
 
-namespace plemma
-{
+namespace plemma {
 
 class Position2D
 {
-public:
+  public:
     Position2D(int posx, int posy) : x(posx), y(posy) {}
     int X() const { return x; }
     int Y() const { return y; }
     void PerformDrunkElfsDirective(char directive);
-private:
+
+  private:
     int x;
     int y;
 };
 
 void Position2D::PerformDrunkElfsDirective(char directive)
 {
-    switch(directive)
-    {
-        case '^' : ++y; break;
-        case '>' : ++x; break;
-        case 'v' : --y; break;
-        case '<' : --x; break;
+    switch (directive) {
+        case '^':
+            ++y;
+            break;
+        case '>':
+            ++x;
+            break;
+        case 'v':
+            --y;
+            break;
+        case '<':
+            --x;
+            break;
     }
 }
 
@@ -50,4 +57,4 @@ struct Position2DComparator
     }
 };
 
-} // namespace plemma
+}  // namespace plemma

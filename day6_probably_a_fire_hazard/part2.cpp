@@ -1,11 +1,10 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
-#include <numeric>
 #include <functional>
+#include <iostream>
+#include <numeric>
+#include <vector>
 
-namespace plemma
-{
+namespace plemma {
 
 constexpr size_t kNumColumns = 1000;
 constexpr size_t kNumRows = 1000;
@@ -27,20 +26,16 @@ bool ReadParametersOfCommand(Parameters& param)
     std::string s;
     if (!(std::cin >> s))
         return false;
-    if (s[s.size() - 1] == 'n')
-    {
+    if (s[s.size() - 1] == 'n') {
         std::cin >> s;
-        if (s[s.size() - 1] == 'n')
-        {
+        if (s[s.size() - 1] == 'n') {
             param.brightness_diff = 1;
         }
-        else
-        {
+        else {
             param.brightness_diff = -1;
         }
     }
-    else
-    {
+    else {
         param.brightness_diff = 2;
     }
     char comma;
@@ -55,29 +50,24 @@ bool ReadParametersOfCommand(Parameters& param)
 
 void ExecuteCommand(Grid& grid, Parameters& param)
 {
-    for(size_t row = param.start_row; row < param.end_row; ++row)
-    {
+    for (size_t row = param.start_row; row < param.end_row; ++row) {
         auto start = std::begin(grid[row]) + param.start_col;
         auto end = std::begin(grid[row]) + param.end_col;
-        std::transform(start, end, start,
-            [=](const int& value){ return std::max(0, value + param.brightness_diff); }
-        );
+        std::transform(start, end, start, [=](const int& value) {
+            return std::max(0, value + param.brightness_diff);
+        });
     }
 }
 
 int AccumulateBrightness(const Grid& grid)
 {
     return std::accumulate(
-        std::begin(grid),
-        std::end(grid),
-        0,
-        [](int sum, const std::vector<int>& v){
+        std::begin(grid), std::end(grid), 0, [](int sum, const std::vector<int>& v) {
             return std::accumulate(std::begin(v), std::end(v), sum);
-        }
-    );
+        });
 }
 
-} // namespace plemma
+}  // namespace plemma
 
 int main()
 {
@@ -85,8 +75,7 @@ int main()
 
     plemma::Parameters p;
 
-    while(plemma::ReadParametersOfCommand(p))
-    {
+    while (plemma::ReadParametersOfCommand(p)) {
         plemma::ExecuteCommand(grid, p);
     }
     std::cout << plemma::AccumulateBrightness(grid) << std::endl;

@@ -5,24 +5,21 @@
 int main()
 {
     using plemma::Position2D;
-    using plemma::Position2DHasher;
     using plemma::Position2DComparator;
+    using plemma::Position2DHasher;
     char dir;
-    Position2D position_santa(0,0);
-    Position2D position_robosanta(0,0);
-    std::unordered_set<Position2D, Position2DHasher, Position2DComparator>
-        visited_houses{ position_santa };
+    Position2D position_santa(0, 0);
+    Position2D position_robosanta(0, 0);
+    std::unordered_set<Position2D, Position2DHasher, Position2DComparator> visited_houses{
+        position_santa};
 
     bool is_santas_turn = true;
-    while (std::cin >> dir)
-    {
-        if (is_santas_turn)
-        {
+    while (std::cin >> dir) {
+        if (is_santas_turn) {
             position_santa.PerformDrunkElfsDirective(dir);
             visited_houses.insert(position_santa);
         }
-        else
-        {
+        else {
             position_robosanta.PerformDrunkElfsDirective(dir);
             visited_houses.insert(position_robosanta);
         }

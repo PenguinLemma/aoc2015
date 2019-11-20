@@ -10,5 +10,6 @@ int main()
     if (plemma::day10::LookAndSay(sequence, 40))
         std::cout << sequence.size() << std::endl;
     else
-        std::cout << "Elves are discussing about the rules of the game, better come back later" << std::endl;
+        std::cout << "Elves are discussing about the rules of the game, better come back later"
+                  << std::endl;
 }

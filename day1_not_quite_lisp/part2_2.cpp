@@ -6,14 +6,11 @@ int main()
     int position = 1;
     int floor = 0;
     char c;
-    while (std::cin >> c)
-    {
-        if (c == '(')
-        {
+    while (std::cin >> c) {
+        if (c == '(') {
             ++floor;
         }
-        else
-        {
+        else {
             --floor;
         }
         if (floor == -1)

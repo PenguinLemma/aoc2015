@@ -1,23 +1,19 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
-namespace plemma
-{
+namespace plemma {
 
 std::vector<int> GetDimensionsFromString(const std::string& box_dim)
 {
     std::vector<int> dimensions(3, 0);
     int index_dim = 0;
-    for (int i = 0; i < static_cast<int>(box_dim.size()); ++i)
-    {
-        if (box_dim[i] == 'x')
-        {
+    for (int i = 0; i < static_cast<int>(box_dim.size()); ++i) {
+        if (box_dim[i] == 'x') {
             ++index_dim;
         }
-        else
-        {
+        else {
             dimensions[index_dim] *= 10;
             dimensions[index_dim] += static_cast<int>(box_dim[i]) - static_cast<int>('0');
         }
@@ -28,4 +24,4 @@ std::vector<int> GetDimensionsFromString(const std::string& box_dim)
     return dimensions;
 }
 
-} // namespace plemma
+}  // namespace plemma
