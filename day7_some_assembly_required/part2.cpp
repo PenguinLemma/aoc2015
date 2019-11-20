@@ -27,5 +27,7 @@ int main()
         evaluator.Add(variable_name, expression);
         std::getline(std::cin, expression);
     }
+    auto a = evaluator.Evaluate("a");
+    evaluator.Overwrite("b", a);
     std::cout << evaluator.Evaluate("a") << std::endl;
 }
