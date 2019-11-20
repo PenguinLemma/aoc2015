@@ -5,3 +5,7 @@ build/*
 #Ignore all executables
 *.out
 *.exe
+
+.idea
+cmake-build-*
+.vscode
